@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lms.Content.Domain\Lms.ContentService.Domain.csproj" />
+    <ProjectReference Include="..\Lms.ContentService.Domain\Lms.ContentService.Domain.csproj" />
   </ItemGroup>
 
 </Project>
