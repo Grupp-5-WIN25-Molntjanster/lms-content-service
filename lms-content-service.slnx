@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/tests/">
+    <Project Path="Lms.ContentService.IntegrationTests/Lms.ContentService.IntegrationTests.csproj" Id="ac23c42c-f9d1-4917-9bc1-18ca939198fb" />
+    <Project Path="Lms.ContentService.UnitTests/Lms.ContentService.UnitTests.csproj" Id="dd27d0bf-b2f7-47e0-bfc3-8c2089a474bb" />
+  </Folder>
+  <Project Path="Lms.ContentService.Api/Lms.ContentService.Api.csproj" Id="f1d3c60d-91db-4820-85f3-a542017fb657" />
+  <Project Path="Lms.ContentService.Application/Lms.ContentService.Application.csproj" />
+  <Project Path="Lms.ContentService.Domain/Lms.ContentService.Domain.csproj" />
+  <Project Path="Lms.ContentService.Infrastructure/Lms.ContentService.Infrastructure.csproj" Id="34fcc87d-1178-439c-8d7f-16f3905d2f65" />
+</Solution>
