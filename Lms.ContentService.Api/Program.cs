@@ -10,7 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
 builder.Services.AddInfrastructure(builder.Configuration);
 
-var jwtSecret = builder.Configuration["Jwt:Secret"]!;
+var jwtSecret = builder.Configuration["Jwt:Secret"]
+    ?? throw new InvalidOperationException("Jwt:Secret is not configured. Set 'Jwt__Secret' in app settings.");
+
 builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -35,31 +37,40 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// ============================================================
-// Migrate() for SQL Server, EnsureCreated() for InMemory
-// ============================================================
-using (var scope = app.Services.CreateScope())
+
+try
 {
+    using var scope = app.Services.CreateScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<ContentDbContext>();
 
-    // Check if we're using a relational database
     if (dbContext.Database.IsRelational())
-    {
-        // Production: Apply EF Core migrations (SQL Server)
         dbContext.Database.Migrate();
-    }
     else
-    {
-        // Testing: Ensure database is created (InMemory)
         dbContext.Database.EnsureCreated();
-    }
+}
+catch (Exception ex)
+{
+    Log.Error(ex, "Database migration failed during startup");
+    throw;
 }
 
-if (app.Environment.IsDevelopment())
+app.MapGet("/", () => "LMS Content API is running.");
+
+app.MapGet("/health", () => Results.Ok(new
 {
-    app.MapOpenApi();
-    app.MapScalarApiReference();
-}
+    status = "Healthy",
+    environment = app.Environment.EnvironmentName,
+    time = DateTimeOffset.UtcNow
+}));
+
+app.MapOpenApi("/openapi/{documentName}.json");
+
+app.MapScalarApiReference("/scalar/v1", options =>
+{
+    options.Title = "LMS Content Service";
+    options.Theme = ScalarTheme.Purple;
+    options.OpenApiRoutePattern = "/openapi/{documentName}.json";
+});
 
 app.UseSerilogRequestLogging();
 app.UseMiddleware<ApiKeyMiddleware>();
