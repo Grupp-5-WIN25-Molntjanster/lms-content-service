@@ -11,12 +11,19 @@
 *.sln.docstates
 *.env
 **/appsettings.Development.json
+**/Migrations/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
 # Mono auto generated files
 mono_crash.*
+
+# Visual Studio publish profiles - personal/sensitive
+**/Properties/PublishProfiles/*.pubxml.user
+**/Properties/ServiceDependencies/
+**/Properties/serviceDependencies.json
+**/Properties/serviceDependencies.*.json
 
 # Build results
 [Dd]ebug/
