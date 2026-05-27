@@ -19,11 +19,13 @@
 # Mono auto generated files
 mono_crash.*
 
-# Visual Studio publish profiles - personal/sensitive
-**/Properties/PublishProfiles/*.pubxml.user
+# Visual Studio service dependencies (publish-related, personal)
 **/Properties/ServiceDependencies/
-**/Properties/serviceDependencies.json
-**/Properties/serviceDependencies.*.json
+**/serviceDependencies.json
+**/serviceDependencies.*.json
+
+# Visual Studio publish profile user-specific
+**/*.pubxml.user
 
 # Build results
 [Dd]ebug/
