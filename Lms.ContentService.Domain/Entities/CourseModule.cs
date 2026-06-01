@@ -54,8 +54,7 @@ public class CourseModule : BaseEntity
 
     public Lesson AddLesson(string title, string? content, string? videoUrl, int order, int durationMinutes)
     {
-        if (_lessons.Any(l => l.Order == order))
-            throw new InvalidOperationException($"Lesson with order {order} already exists in this module.");
+        ValidateLessonOrder(order);
 
         var lesson = new Lesson(Id, title, content, videoUrl, order, durationMinutes);
         _lessons.Add(lesson);
@@ -75,4 +74,35 @@ public class CourseModule : BaseEntity
 
     public int PublishedLessonCount => _lessons.Count(l => l.Status == Enums.LessonStatus.Published);
     public int TotalLessonCount => _lessons.Count;
+
+    /// <summary>
+    /// Validates that no lesson with the same order exists.
+    /// </summary>
+    public void ValidateUniqueOrder(IEnumerable<CourseModule> existingModules)
+    {
+        if (existingModules.Any(m => m.Order == Order && m.Id != Id))
+            throw new InvalidOperationException(
+                $"A module with order {Order} already exists in this course.");
+    }
+
+    /// <summary>
+    /// Validates that the lesson order is unique within this module.
+    /// Called before adding a new lesson.
+    /// </summary>
+    public void ValidateLessonOrder(int order)
+    {
+        if (_lessons.Any(l => l.Order == order))
+            throw new InvalidOperationException(
+                $"A lesson with order {order} already exists in this module.");
+    }
+
+    /// <summary>
+    /// Validates that the new order doesn't conflict with existing modules.
+    /// </summary>
+    public void ValidateOrder(int newOrder, IEnumerable<CourseModule> existingModules)
+    {
+        if (existingModules.Any(m => m.Order == newOrder && m.Id != Id))
+            throw new InvalidOperationException(
+                $"A module with order {newOrder} already exists in this course.");
+    }
 }
