@@ -32,9 +32,16 @@ public class ContentService
 
     public async Task<ModuleDto> CreateModuleAsync(CreateModuleRequest request)
     {
+        var existingModules = await _repository.GetModulesByCourseIdAsync(request.CourseId, 1, 100);
+
         var module = new CourseModule(request.CourseId, request.Title, request.Description, request.Order);
+
+        // Domain-level validation
+        module.ValidateUniqueOrder(existingModules.Items);
+
         _repository.AddModule(module);
         await _context.SaveChangesAsync();
+
         return MapToModuleDto(module, false);
     }
 
@@ -42,9 +49,17 @@ public class ContentService
     {
         var module = await _repository.GetModuleByIdAsync(moduleId);
         if (module == null) return null;
+
+        // Get all modules in the same course
+        var existingModules = await _repository.GetModulesByCourseIdAsync(module.CourseId, 1, 100);
+
+        // Validate new order doesn't conflict (excludes current module)
+        module.ValidateOrder(request.Order, existingModules.Items);
+
         module.Update(request.Title, request.Description, request.Order);
         _repository.UpdateModule(module);
         await _context.SaveChangesAsync();
+
         return MapToModuleDto(module, false);
     }
 
@@ -80,17 +95,38 @@ public class ContentService
     {
         var module = await _repository.GetModuleByIdAsync(moduleId);
         if (module == null) return null;
-        var lesson = module.AddLesson(request.Title, request.Content, request.VideoUrl, request.Order, request.DurationMinutes);
-        _repository.AddLesson(lesson);
-        await _context.SaveChangesAsync();
-        return MapToLessonDto(lesson);
+
+        try
+        {
+            var lesson = module.AddLesson(
+                request.Title, request.Content, request.VideoUrl,
+                request.Order, request.DurationMinutes);
+
+            _repository.AddLesson(lesson);
+            await _context.SaveChangesAsync();
+            return MapToLessonDto(lesson);
+        }
+        catch (InvalidOperationException ex)
+        {
+            // Re-throw so controller can catch it
+            throw;
+        }
     }
 
     public async Task<LessonDto?> UpdateLessonAsync(Guid lessonId, UpdateLessonRequest request)
     {
         var lesson = await _repository.GetLessonByIdAsync(lessonId);
         if (lesson == null) return null;
-        lesson.Update(request.Title, request.Content, request.VideoUrl, request.Order, request.DurationMinutes);
+
+        // Get all lessons in the same module to check for order conflicts
+        var existingLessons = await _repository.GetLessonsByModuleIdAsync(
+            lesson.ModuleId, 1, 100, publishedOnly: false);
+
+        // Validate the new order doesn't conflict (excludes current lesson)
+        lesson.ValidateOrder(request.Order, existingLessons.Items);
+
+        lesson.Update(request.Title, request.Content, request.VideoUrl,
+            request.Order, request.DurationMinutes);
         _repository.UpdateLesson(lesson);
         await _context.SaveChangesAsync();
         return MapToLessonDto(lesson);
