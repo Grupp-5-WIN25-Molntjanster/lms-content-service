@@ -89,4 +89,15 @@ public class Lesson : BaseEntity
         var resource = _resources.FirstOrDefault(r => r.FileId == fileId);
         if (resource != null) _resources.Remove(resource);
     }
+
+    /// <summary>
+    /// Validates that the new order doesn't conflict with existing lessons in the same module.
+    /// Excludes the current lesson (for updates).
+    /// </summary>
+    public void ValidateOrder(int newOrder, IEnumerable<Lesson> existingLessons)
+    {
+        if (existingLessons.Any(l => l.Order == newOrder && l.Id != Id))
+            throw new InvalidOperationException(
+                $"A lesson with order {newOrder} already exists in this module.");
+    }
 }
