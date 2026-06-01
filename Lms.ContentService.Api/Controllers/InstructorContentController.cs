@@ -12,7 +12,6 @@ public class InstructorContentController : ControllerBase
     private readonly Lms.ContentService.Application.Services.ContentService _contentService;
     public InstructorContentController(Lms.ContentService.Application.Services.ContentService contentService) => _contentService = contentService;
 
-    [HttpPost("courses/{courseId}/modules")]
     /// <summary>
     /// Create a new module in a course.
     /// Returns 409 Conflict if a module with the same order already exists.
