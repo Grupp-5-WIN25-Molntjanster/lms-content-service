@@ -3,6 +3,7 @@ using Lms.ContentService.Infrastructure.Middleware;
 using Lms.ContentService.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
+using System.Security.Claims;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,7 +28,7 @@ builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.JwtBearer
             IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
                 System.Text.Encoding.UTF8.GetBytes(jwtSecret)),
             NameClaimType = "name",
-            RoleClaimType = "role"
+            RoleClaimType = ClaimTypes.Role
         };
     });
 
