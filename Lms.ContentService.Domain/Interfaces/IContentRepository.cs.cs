@@ -7,7 +7,7 @@ public interface IContentRepository
 {
     // Module operations with pagination
     Task<CourseModule?> GetModuleByIdAsync(Guid moduleId);
-    Task<PaginatedList<CourseModule>> GetModulesByCourseIdAsync(Guid courseId, int pageNumber, int pageSize);
+    Task<PaginatedList<CourseModule>> GetModulesByCourseIdAsync(int courseId, int pageNumber, int pageSize);
     void AddModule(CourseModule module);
     void UpdateModule(CourseModule module);
     void DeleteModule(CourseModule module);
