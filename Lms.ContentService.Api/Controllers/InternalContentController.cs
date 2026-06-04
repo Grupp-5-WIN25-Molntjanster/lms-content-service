@@ -10,8 +10,8 @@ public class InternalContentController : ControllerBase
     private readonly Lms.ContentService.Application.Services.ContentService _contentService;
     public InternalContentController(Lms.ContentService.Application.Services.ContentService contentService) => _contentService = contentService;
 
-    [HttpGet("courses/{courseId}/has-content")]
-    public async Task<IActionResult> CourseHasContent(Guid courseId)
+    [HttpGet("courses/{courseId:int}/has-content")]
+    public async Task<IActionResult> CourseHasContent(int courseId)
     {
         var hasContent = await _contentService.CourseHasContentAsync(courseId);
         return Ok(new { courseId, hasContent });
