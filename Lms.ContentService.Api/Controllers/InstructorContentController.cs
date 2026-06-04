@@ -16,8 +16,8 @@ public class InstructorContentController : ControllerBase
     /// Create a new module in a course.
     /// Returns 409 Conflict if a module with the same order already exists.
     /// </summary>
-    [HttpPost("courses/{courseId}/modules")]
-    public async Task<IActionResult> CreateModule(Guid courseId, [FromBody] CreateModuleRequest request)
+    [HttpPost("courses/{courseId:int}/modules")]
+    public async Task<IActionResult> CreateModule(int courseId, [FromBody] CreateModuleRequest request)
     {
         request.CourseId = courseId;
 
