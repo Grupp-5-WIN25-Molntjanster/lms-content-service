@@ -23,7 +23,7 @@ public class ContentService
     // MODULE OPERATIONS WITH PAGINATION
     // ================================================================
 
-    public async Task<PaginatedResult<ModuleDto>> GetModulesByCourseAsync(Guid courseId, PaginationRequest pagination, bool isInstructor)
+    public async Task<PaginatedResult<ModuleDto>> GetModulesByCourseAsync(int courseId, PaginationRequest pagination, bool isInstructor)
     {
         var paginatedModules = await _repository.GetModulesByCourseIdAsync(courseId, pagination.PageNumber, pagination.PageSize);
         var dtos = paginatedModules.Items.Select(m => MapToModuleDto(m, !isInstructor)).ToList();
@@ -153,7 +153,7 @@ public class ContentService
         return true;
     }
 
-    public async Task<bool> CourseHasContentAsync(Guid courseId)
+    public async Task<bool> CourseHasContentAsync(int courseId)
     {
         var modules = await _repository.GetModulesByCourseIdAsync(courseId, 1, 100);
         return modules.Items.Any(m => m.PublishedLessonCount > 0);
