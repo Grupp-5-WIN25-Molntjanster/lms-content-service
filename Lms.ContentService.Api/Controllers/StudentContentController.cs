@@ -11,9 +11,9 @@ public class StudentContentController : ControllerBase
     private readonly Lms.ContentService.Application.Services.ContentService _contentService;
     public StudentContentController(Lms.ContentService.Application.Services.ContentService contentService) => _contentService = contentService;
 
-    [HttpGet("courses/{courseId}/modules")]
+    [HttpGet("courses/{courseId:int}/modules")]
     [AllowAnonymous]
-    public async Task<IActionResult> GetModules(Guid courseId, [FromQuery] PaginationRequest pagination)
+    public async Task<IActionResult> GetModules(int courseId, [FromQuery] PaginationRequest pagination)
     {
         var isInstructor = User.IsInRole("Instructor") || User.IsInRole("Admin");
         var result = await _contentService.GetModulesByCourseAsync(courseId, pagination, isInstructor);
