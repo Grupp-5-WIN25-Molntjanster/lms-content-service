@@ -29,7 +29,7 @@ public class CourseModuleTests
     public void Create_WithValidData_ShouldSucceed()
     {
         // ACT
-        var courseId = Guid.NewGuid();
+        var courseId = 1;
         var module = new CourseModule(courseId, "Introduction to C#", "Learn the basics", 1);
 
         // ASSERT
@@ -51,7 +51,7 @@ public class CourseModuleTests
     public void Create_WithEmptyTitle_ShouldThrowException()
     {
         // ACT
-        Action act = () => new CourseModule(Guid.NewGuid(), "", null, 0);
+        Action act = () => new CourseModule(1, "", null, 0);
 
         // ASSERT
         act.Should().Throw<ArgumentException>()
@@ -65,7 +65,7 @@ public class CourseModuleTests
     public void Create_WithWhitespaceTitle_ShouldThrowException()
     {
         // ACT
-        Action act = () => new CourseModule(Guid.NewGuid(), "   ", null, 0);
+        Action act = () => new CourseModule(1, "   ", null, 0);
 
         // ASSERT
         act.Should().Throw<ArgumentException>()
@@ -79,7 +79,7 @@ public class CourseModuleTests
     public void Create_WithNullTitle_ShouldThrowException()
     {
         // ACT
-        Action act = () => new CourseModule(Guid.NewGuid(), null!, null, 0);
+        Action act = () => new CourseModule(1, null!, null, 0);
 
         // ASSERT
         act.Should().Throw<ArgumentException>()
@@ -95,7 +95,7 @@ public class CourseModuleTests
     public void Create_WithNegativeOrder_ShouldThrowException()
     {
         // ACT
-        Action act = () => new CourseModule(Guid.NewGuid(), "Title", null, -1);
+        Action act = () => new CourseModule(1, "Title", null, -1);
 
         // ASSERT
         act.Should().Throw<ArgumentException>()
@@ -109,7 +109,7 @@ public class CourseModuleTests
     public void Create_WithZeroOrder_ShouldSucceed()
     {
         // ACT
-        var module = new CourseModule(Guid.NewGuid(), "Title", null, 0);
+        var module = new CourseModule(1, "Title", null, 0);
 
         // ASSERT
         module.Order.Should().Be(0);
@@ -122,7 +122,7 @@ public class CourseModuleTests
     public void Create_WithoutDescription_ShouldHaveNullDescription()
     {
         // ACT
-        var module = new CourseModule(Guid.NewGuid(), "Title", null, 0);
+        var module = new CourseModule(1, "Title", null, 0);
 
         // ASSERT
         module.Description.Should().BeNull();
@@ -139,7 +139,7 @@ public class CourseModuleTests
     public void Update_WithValidData_ShouldUpdateProperties()
     {
         // ARRANGE
-        var courseId = Guid.NewGuid();
+        var courseId = 1;
         var module = new CourseModule(courseId, "Original Title", "Original Description", 1);
         var beforeUpdate = module.UpdatedAt;
 
@@ -164,7 +164,7 @@ public class CourseModuleTests
     public void Update_WithEmptyTitle_ShouldThrowException()
     {
         // ARRANGE
-        var module = new CourseModule(Guid.NewGuid(), "Title", "Description", 1);
+        var module = new CourseModule(1, "Title", "Description", 1);
 
         // ACT
         Action act = () => module.Update("", null, 1);
@@ -185,7 +185,7 @@ public class CourseModuleTests
     public void AddLesson_WithValidData_ShouldAddToModule()
     {
         // ARRANGE
-        var module = new CourseModule(Guid.NewGuid(), "Module 1", null, 1);
+        var module = new CourseModule(1, "Module 1", null, 1);
 
         // ACT
         var lesson = module.AddLesson("Lesson 1", "Content here", "https://video.url", 1, 30);
@@ -211,7 +211,7 @@ public class CourseModuleTests
     public void AddLesson_WithDuplicateOrder_ShouldThrowException()
     {
         // ARRANGE
-        var module = new CourseModule(Guid.NewGuid(), "Module 1", null, 1);
+        var module = new CourseModule(1, "Module 1", null, 1);
         module.AddLesson("Lesson 1", null, null, 1, 30);
 
         // ACT
@@ -229,7 +229,7 @@ public class CourseModuleTests
     public void AddLesson_MultipleLessons_ShouldTrackCorrectCount()
     {
         // ARRANGE
-        var module = new CourseModule(Guid.NewGuid(), "Module", null, 1);
+        var module = new CourseModule(1, "Module", null, 1);
 
         // ACT
         module.AddLesson("L1", null, null, 1, 30);
@@ -250,7 +250,7 @@ public class CourseModuleTests
     public void AddLesson_LessonsShouldMaintainOrder()
     {
         // ARRANGE
-        var module = new CourseModule(Guid.NewGuid(), "Module", null, 1);
+        var module = new CourseModule(1, "Module", null, 1);
 
         // ACT
         module.AddLesson("Third", null, null, 3, 30);
@@ -275,7 +275,7 @@ public class CourseModuleTests
     public void PublishAllLessons_ShouldPublishAllDraftLessons()
     {
         // ARRANGE
-        var module = new CourseModule(Guid.NewGuid(), "Module", null, 1);
+        var module = new CourseModule(1, "Module", null, 1);
         module.AddLesson("L1", null, null, 1, 30);
         module.AddLesson("L2", null, null, 2, 45);
         module.AddLesson("L3", null, null, 3, 60);
@@ -296,7 +296,7 @@ public class CourseModuleTests
     public void PublishAllLessons_ShouldNotRepublishAlreadyPublished()
     {
         // ARRANGE
-        var module = new CourseModule(Guid.NewGuid(), "Module", null, 1);
+        var module = new CourseModule(1, "Module", null, 1);
         var lesson1 = module.AddLesson("L1", null, null, 1, 30);
         lesson1.Publish(); // Already published
         module.AddLesson("L2", null, null, 2, 45); // Still draft
@@ -316,7 +316,7 @@ public class CourseModuleTests
     public void PublishedLessonCount_ShouldOnlyCountPublished()
     {
         // ARRANGE
-        var module = new CourseModule(Guid.NewGuid(), "Module", null, 1);
+        var module = new CourseModule(1, "Module", null, 1);
         module.AddLesson("Draft Lesson", null, null, 1, 30);
         var publishedLesson = module.AddLesson("Published Lesson", null, null, 2, 45);
         publishedLesson.Publish();
@@ -337,7 +337,7 @@ public class CourseModuleTests
     public void TotalDurationMinutes_ShouldSumOnlyPublishedLessons()
     {
         // ARRANGE
-        var module = new CourseModule(Guid.NewGuid(), "Module", null, 1);
+        var module = new CourseModule(1, "Module", null, 1);
         module.AddLesson("Draft", null, null, 1, 30); // Draft - not counted
         var publishedLesson = module.AddLesson("Published", null, null, 2, 45);
         publishedLesson.Publish();
@@ -352,7 +352,7 @@ public class CourseModuleTests
     public void TotalDurationMinutes_WithNoPublishedLessons_ShouldBeZero()
     {
         // ARRANGE
-        var module = new CourseModule(Guid.NewGuid(), "Module", null, 1);
+        var module = new CourseModule(1, "Module", null, 1);
         module.AddLesson("Draft 1", null, null, 1, 30);
         module.AddLesson("Draft 2", null, null, 2, 45);
 
