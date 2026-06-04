@@ -16,7 +16,7 @@ namespace Lms.ContentService.Domain.Entities;
 /// </summary>
 public class CourseModule : BaseEntity
 {
-    public Guid CourseId { get; private set; }
+    public int CourseId { get; private set; }
     public string Title { get; private set; }
     public string? Description { get; private set; }
     public int Order { get; private set; }
@@ -27,7 +27,7 @@ public class CourseModule : BaseEntity
     // EF Core constructor
     private CourseModule() { }
 
-    public CourseModule(Guid courseId, string title, string? description, int order)
+    public CourseModule(int courseId, string title, string? description, int order)
     {
         if (string.IsNullOrWhiteSpace(title))
             throw new ArgumentException("Module title is required.", nameof(title));
