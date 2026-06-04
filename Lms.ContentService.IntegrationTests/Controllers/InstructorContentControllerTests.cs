@@ -37,7 +37,7 @@ public class InstructorContentControllerTests : IClassFixture<CustomWebApplicati
     {
         var request = new CreateModuleRequest
         {
-            CourseId = Guid.NewGuid(),
+            CourseId = 1,
             Title = "Test Module",
             Order = 1
         };
@@ -56,7 +56,7 @@ public class InstructorContentControllerTests : IClassFixture<CustomWebApplicati
     {
         var request = new CreateModuleRequest
         {
-            CourseId = Guid.NewGuid(),
+            CourseId = 1,
             Title = "",  // Invalid - but auth check comes first
             Order = 1
         };
