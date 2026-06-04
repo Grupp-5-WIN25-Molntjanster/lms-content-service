@@ -13,7 +13,7 @@ public class ContentRepository : IContentRepository
     public async Task<CourseModule?> GetModuleByIdAsync(Guid moduleId) =>
         await _context.Modules.Include(m => m.Lessons).ThenInclude(l => l.Resources).FirstOrDefaultAsync(m => m.Id == moduleId);
 
-    public async Task<PaginatedList<CourseModule>> GetModulesByCourseIdAsync(Guid courseId, int pageNumber, int pageSize)
+    public async Task<PaginatedList<CourseModule>> GetModulesByCourseIdAsync(int courseId, int pageNumber, int pageSize)
     {
         var query = _context.Modules.Where(m => m.CourseId == courseId).OrderBy(m => m.Order);
         var totalCount = await query.CountAsync();
