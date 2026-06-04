@@ -4,7 +4,7 @@ namespace Lms.ContentService.Application.DTOs;
 
 public class CreateModuleRequest
 {
-    public Guid CourseId { get; set; }
+    public int CourseId { get; set; }
 
     [Required, StringLength(200, MinimumLength = 1)]
     public string Title { get; set; } = string.Empty;
