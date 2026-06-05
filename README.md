@@ -11,6 +11,17 @@ over HTTP and references by `FileId`.
 
 ---
 
+## Live deployment
+
+The service is deployed to **Content Service**:
+
+- Base URL → `https://lms-contentservice-api-dncefsd4dfbjdgdg.germanywestcentral-01.azurewebsites.net/`
+- Health check → `https://lms-contentservice-api-dncefsd4dfbjdgdg.germanywestcentral-01.azurewebsites.net/health`
+- Interactive API docs (Scalar) → `https://lms-contentservice-api-dncefsd4dfbjdgdg.germanywestcentral-01.azurewebsites.net/scalar/v1`
+- OpenAPI document → `https://lms-contentservice-api-dncefsd4dfbjdgdg.germanywestcentral-01.azurewebsites.net/openapi/v1.json`
+
+---
+
 ## Tech stack
 
 - **.NET 10** / ASP.NET Core Web API
